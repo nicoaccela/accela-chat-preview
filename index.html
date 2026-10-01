@@ -49,10 +49,10 @@
     <div class="hero">
       <div>
         <h1>Accela Chat, <em>the new cockpit.</em></h1>
-        <p class="lead">A preview build of Accela Chat with a Home launchpad, a Command Center cockpit with scheduled runs and a typed signals table, and an Analysis view of pipeline health. It runs Claude on your own computer. Shared with a few people for feedback.</p>
+        <p class="lead">A preview build of Accela Chat for Mac and Windows with a Home launchpad, a Command Center cockpit with scheduled runs and a typed signals table, and an Analysis view of pipeline health. It runs Claude on your own computer. Shared with a few people for feedback.</p>
         <a id="cta" class="cta" href="https://github.com/nicoaccela/accela-chat-preview/releases/latest">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>
-          <span id="ctaText">Download for Mac (Apple Silicon)</span>
+          <span id="ctaText">Download Accela Chat</span>
         </a>
         <div class="sub" id="ver">Checking the latest version…</div>
         <div class="others" id="others"></div>
@@ -73,13 +73,24 @@
     <section class="panel">
       <h2>Install in 3 steps</h2>
       <p class="muted">Before you start, you need Claude Code on your computer and a Claude sign-in. The app's first screen checks this and walks you through it.</p>
-      <div class="steps">
-        <div class="step"><div class="n">1</div><b>Open the download</b>Double-click the .dmg file, then drag Accela Chat into Applications.</div>
-        <div class="step"><div class="n">2</div><b>Open it the first time</b>Right-click Accela Chat in Applications and choose Open, then Open again. If it is still blocked: System Settings, Privacy &amp; Security, Open Anyway.</div>
-        <div class="step"><div class="n">3</div><b>Connect your tools</b>Sign in to Claude Code if asked, then open Connections to add Outlook, Salesforce, Gong and Pursuit.</div>
+      <div class="tabs"><button data-os="mac">Mac</button><button data-os="win">Windows</button></div>
+      <div class="os" id="os-mac">
+        <div class="steps">
+          <div class="step"><div class="n">1</div><b>Open the download</b>Double-click the .dmg file, then drag Accela Chat into Applications.</div>
+          <div class="step"><div class="n">2</div><b>Open it the first time</b>Right-click Accela Chat in Applications and choose Open, then Open again. If it is still blocked: System Settings, Privacy &amp; Security, Open Anyway.</div>
+          <div class="step"><div class="n">3</div><b>Connect your tools</b>Sign in to Claude Code if asked, then open Connections to add Outlook, Salesforce, Gong and Pursuit.</div>
+        </div>
+        <div class="note">The Mac build is for Apple silicon (M1, M2, M3, M4). Check Apple menu, About This Mac. It needs macOS 12 or newer.</div>
       </div>
-      <div class="note">This build is for Macs with Apple silicon (M1, M2, M3, M4). Check Apple menu, About This Mac. It needs macOS 12 or newer and a Claude Code sign-in.</div>
-      <div class="note">Why the security prompt? This is a preview signed with a personal certificate, not an Apple-notarized release, so your Mac asks once before opening it.</div>
+      <div class="os" id="os-win">
+        <div class="steps">
+          <div class="step"><div class="n">1</div><b>Run the installer</b>Open Accela-Chat-Preview-Setup.exe from your Downloads.</div>
+          <div class="step"><div class="n">2</div><b>Get past SmartScreen</b>If Windows says it protected your PC, click More info, then Run anyway. This happens once.</div>
+          <div class="step"><div class="n">3</div><b>Connect your tools</b>Sign in to Claude Code if asked, then open Connections to add Outlook, Salesforce, Gong and Pursuit.</div>
+        </div>
+        <div class="note">The Windows build is for 64-bit Windows 10 or 11. It is new and has had less testing than the Mac build, so tell me what looks off. A few Mac-only features (the local assistant panel, on-device voice) do not apply.</div>
+      </div>
+      <div class="note">Why the security prompt? This is a preview that is not code-signed by a public authority (on Mac it uses a personal certificate and is not Apple-notarized), so your computer asks once before opening it.</div>
     </section>
     <section class="features">
       <div class="f"><b>Home</b>A launchpad to Salesforce, Outlook, Gong, Pursuit and more, with the clock, weather and news for your territory.</div>
@@ -103,7 +114,7 @@
   fetch("https://api.github.com/repos/"+REPO+"/releases/latest").then(function(r){return r.json()}).then(function(rel){
     var a=rel.assets||[], v=(rel.tag_name||"").replace(/^v/,"");
     function find(re){var x=a.find(function(z){return re.test(z.name)});return x&&x.browser_download_url}
-    var arm=find(/-arm64\.dmg$/), intel=null, win=null;
+    var arm=find(/-arm64\.dmg$/), intel=null, win=find(/Setup-.*\.exe$/);
     var links=[{k:"arm",label:"Mac (Apple Silicon)",url:arm},{k:"intel",label:"Mac (Intel)",url:intel},{k:"win",label:"Windows",url:win}].filter(function(l){return l.url});
     var primary=isWin?"win":(isMac?(guessAppleSilicon()?"arm":"intel"):"arm");
     var p=links.find(function(l){return l.k===primary})||links[0];
